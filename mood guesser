@@ -1,0 +1,83 @@
+import string
+train_data = [
+    ("I got full marks in the test today!", "Happy"),
+    ("We won the college cricket match!", "Happy"),
+    ("My friends planned a surprise party for me.", "Happy"),
+    ("The food was really tasty.", "Happy"),
+    ("I am excited for the trip.", "Happy"),
+    ("Our project got selected.", "Happy"),
+    ("I learned how to ride a bicycle.", "Happy"),
+    ("Mom made my favourite sweets.", "Happy"),
+
+    ("I lost my phone on the bus.", "Sad"),
+    ("I failed in the mathematics exam.", "Sad"),
+    ("My best friend is moving away.", "Sad"),
+    ("Our picnic was cancelled.", "Sad"),
+    ("I missed the last bus.", "Sad"),
+    ("My laptop stopped working.", "Sad"),
+    ("I felt lonely during the holidays.", "Sad")
+]
+def count_moods(data):
+    happy_count = 0
+    sad_count = 0
+    for sentence, mood in data:
+        if mood == "Happy":
+            happy_count += 1
+        elif mood == "Sad":
+            sad_count += 1
+    return happy_count, sad_count
+happy_words = [
+    "happy", "excited", "great",
+    "won", "tasty", "selected",
+    "favourite", "love", "success", "wonderful"
+]
+sad_words = [
+    "lost", "failed", "sad",
+    "lonely", "upset", "cancelled",
+    "missed", "cry", "disappointed", "problem"
+]
+def clean_sentence(sentence):
+    sentence = sentence.lower()
+    sentence = sentence.translate(
+        str.maketrans("", "", string.punctuation)
+    )
+    return sentence.split()
+def guess_mood(sentence):
+    words = clean_sentence(sentence)
+    happy_score = 0
+    sad_score = 0
+    for word in words:
+        if word in happy_words:
+            happy_score += 1
+        if word in sad_words:
+            sad_score += 1
+    if happy_score > sad_score:
+        return "Happy"
+    elif sad_score > happy_score:
+        return "Sad"
+    else:
+        return "Unknown"
+print("       WELCOME TO MOOD GUESSER")
+user_sentence = input("\nEnter a sentence: ")
+prediction = guess_mood(user_sentence)
+if prediction == "Happy":
+    print("\nYour mood is: Happy ")
+elif prediction == "Sad":
+    print("\nYour mood is: Sad ")
+else:
+    print("\nMood could not be identified.")
+    print("Please enter a sentence with clearer mood-related words.")
+practice_data = [
+    ("I won a medal in the sports meet.", "Happy"),
+    ("I lost my notebook before the exam.", "Sad"),
+    ("My friends gave me a lovely surprise.", "Happy"),
+    ("The train was late and I felt upset.", "Sad"),
+    ("Today was a great day.", "Happy")
+]
+correct = 0
+for sentence, actual_mood in practice_data:
+    predicted_mood = guess_mood(sentence)
+    if predicted_mood == actual_mood:
+        correct += 1
+total = len(practice_data)
+accuracy = (correct / total) * 100
